@@ -11,5 +11,6 @@ namespace WebAPIAutores
 
         public DbSet<Autor> Autores { get; set; }  // En una base de datos, crea una tabla llamada Autores
                                                    // con los campos especificados en la clase 'Autor'
+        public DbSet<Libro> Libros { get; set; }
     }
 }
