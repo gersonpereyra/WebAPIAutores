@@ -14,10 +14,31 @@ namespace WebAPIAutores.Controllers
             this.context = context;
         }
 
-        [HttpGet]
+        // Puedo acceder con las siguientes rutas 
+        [HttpGet] // api/autores
+        [HttpGet("listado")] // api/autores/listado
+        [HttpGet("/listado")] // /listado
         public async Task<ActionResult<List<Autor>>> Get()
         {
             return await context.Autores.Include(x => x.Libros).ToListAsync();
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Autor>> Get(int id)
+        {
+            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Id == id);
+            if(autor == null)
+                return NotFound();
+            return Ok(autor);
+        }
+
+        [HttpGet("{nombre}")]
+        public async Task<ActionResult<Autor>> Get(string nombre)
+        {
+            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Nombre == nombre);
+            if (autor == null)
+                return NotFound();
+            return Ok(autor);
         }
 
         [HttpPost]
@@ -41,7 +62,7 @@ namespace WebAPIAutores.Controllers
             return Ok();
         }
 
-        [HttpDelete("id:int")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
             var existe = await context.Autores.AnyAsync(x => x.Id == id);
